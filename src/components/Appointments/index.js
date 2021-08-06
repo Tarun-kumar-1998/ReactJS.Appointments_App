@@ -35,23 +35,25 @@ class Appointments extends Component {
   onAddAppointment = event => {
     event.preventDefault()
     const {titleInput, dateInput} = this.state
+    if (titleInput === '' || dateInput === '') {
+      alert('Please submit correct details')
+    } else {
+      const formattedDate = dateInput
+        ? format(new Date(dateInput), 'dd MMMM yyyy, EEEE')
+        : ''
+      const newAppointment = {
+        id: v4(),
+        title: titleInput,
+        date: formattedDate,
+        isStarred: false,
+      }
 
-    const formattedDate = dateInput
-      ? format(new Date(dateInput), 'dd MMMM yyyy, EEEE')
-      : ''
-
-    const newAppointment = {
-      id: v4(),
-      title: titleInput,
-      date: formattedDate,
-      isStarred: false,
+      this.setState(prevState => ({
+        appointmentsList: [...prevState.appointmentsList, newAppointment],
+        titleInput: '',
+        dateInput: '',
+      }))
     }
-
-    this.setState(prevState => ({
-      appointmentsList: [...prevState.appointmentsList, newAppointment],
-      titleInput: '',
-      dateInput: '',
-    }))
   }
 
   onChangeDateInput = event => {
